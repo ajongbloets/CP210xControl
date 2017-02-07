@@ -4,6 +4,8 @@ CP210xControl
 
 A Simple GUI to the CP210x USB to UART Bridge of Silicon Labs
 
+Tested with the Silicon Labs CP2104 chip on a `Conrad Relay Board`_.
+
 Requirements
 ------------
 
@@ -26,10 +28,6 @@ Installation
 	# install CP210xControl
 	pip install git+https://github.com/jjongbloets/CP210xControl/master
 
-.. _julesTk: https://github.com/jjongbloets/julesTk
-.. _pyUSB: https://github.com/walac/pyusb
-.. _Silicon Labs: http://www.silabs.com/products/mcu/Pages/USBtoUARTBridgeVCPDrivers.aspx
-
 Running
 -------
 
@@ -44,3 +42,8 @@ Or via the python console
 	from CP210xControl import start_app
 	start_app()
 
+
+.. _julesTk: https://github.com/jjongbloets/julesTk
+.. _pyUSB: https://github.com/walac/pyusb
+.. _Silicon Labs: http://www.silabs.com/products/mcu/Pages/USBtoUARTBridgeVCPDrivers.aspx
+.. _Conrad Relay Board: https://www.conrad.nl/nl/conrad-components-393905-relaiskaart-module-5-vdc-393905.html
