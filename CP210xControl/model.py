@@ -1,8 +1,10 @@
-"""Models used fro CP210x control"""
+"""Model the CP210x Device"""
 
 from julesTk import model
 import usb.core
 from usb.util import CTRL_IN, CTRL_OUT, CTRL_TYPE_VENDOR
+
+__author__ = "Joeri Jongbloets <joeri@jongbloets.net>"
 
 
 class DeviceModel(model.Model):

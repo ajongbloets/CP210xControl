@@ -23,7 +23,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.0.alpha',
+    version='0.1.1.alpha',
 
     description='A simple GUI for CP210x USB to UART Bridges',
     long_description=long_description,
@@ -79,7 +79,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        "julesTk",
+        "julesTk >= 0.3.0a0",
         "pyusb"
     ],
 

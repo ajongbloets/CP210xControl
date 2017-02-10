@@ -1,13 +1,15 @@
+"""Views"""
+
 from julesTk import view
+from julesTk.view import viewset
+
+__author__ = "Joeri Jongbloets <joeri@jongbloets.net>"
 
 
-class MainView(view.ViewSet):
+class MainView(viewset.ViewSet):
     """Main view set"""
 
-    def show(self):
-        self.tkraise()
-
-    def setup(self):
+    def _prepare(self):
         # resize parent with window
         self.configure_row(self.parent, 0)
         self.configure_column(self.parent, 0)
@@ -15,10 +17,6 @@ class MainView(view.ViewSet):
         self.configure_grid(self)
         self.configure_column(self, 0)
         self.configure_row(self, 0)
-
-    def hide(self):
-        pass
-
 
 # noinspection PyUnresolvedReferences
 class DeviceView(view.View):
@@ -40,7 +38,7 @@ class DeviceView(view.View):
     def status(self, msg):
         self.get_variable("status").set(msg)
 
-    def setup(self):
+    def _prepare(self):
         self.configure_column(self, [0, 1, 2], uniform="foo")
         self.configure_row(self, [0, 1, 2])
         # add title
@@ -72,8 +70,8 @@ class DeviceView(view.View):
         self.title = "Select a device"
         self.status = ""
 
-    def show(self):
-        super(DeviceView, self).show()
+    def _show(self):
+        super(DeviceView, self)._show()
         self.configure_grid(self)
         self.refresh_devices()
 
@@ -92,7 +90,11 @@ class DeviceView(view.View):
         self.controller.application.stop()
 
     def process_ok(self):
-        self.controller.load_gpio()
+        selection = self.view.get_widget("devices").curselection()
+        if len(selection) > 0:
+            self.controller.load_gpio(selection[0])
+        else:
+            self.status = "Select a device"
 
 
 # noinspection PyUnresolvedReferences
@@ -109,7 +111,7 @@ class GPIOView(view.View):
     def status(self, msg):
         self.get_variable("status").set(msg)
 
-    def setup(self):
+    def _prepare(self):
         self.configure_grid(self)
         self.configure_column(self, 0)
         self.configure_row(self, 0)
@@ -147,8 +149,8 @@ class GPIOView(view.View):
         self.add_widget("gpio_lb_%s" % idx, lb)
         self.configure_grid(lb, row=0, column=1)
 
-    def show(self):
-        super(GPIOView, self).show()
+    def _show(self):
+        super(GPIOView, self)._show()
         self.configure_grid(self)
 
     def toggle_gpio(self, gpio):

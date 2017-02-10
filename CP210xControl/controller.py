@@ -1,26 +1,30 @@
+"""The controllers for all the views"""
 
 from julesTk import controller
 from julesTk.utils.observe import Observer
 from model import DeviceModel
 from view import *
 
-class MainController(controller.Controller):
+__author__ = "Joeri Jongbloets <joeri@jongbloets.net>"
+
+
+class MainController(controller.ViewController):
 
     VIEW_CLASS = MainView
 
-    def setup(self):
-        super(MainController, self).setup()
+    def _prepare(self):
+        super(MainController, self)._prepare()
         # add device controller
         if not self.application.has_controller("device"):
-            c = DeviceController(self).setup()
+            c = DeviceController(self).prepare()
             self.application.add_controller("device", c)
         # add gpio controller
         if not self.application.has_controller("gpio"):
-            c = GPIOController(self).setup()
+            c = GPIOController(self).prepare()
             self.application.add_controller("gpio", c)
 
-    def start(self):
-        super(MainController, self).start()
+    def _start(self):
+        super(MainController, self)._start()
         self.application.get_controller("device").start()
 
 
@@ -30,16 +34,13 @@ class DeviceController(controller.ViewController):
 
     VIEW_CLASS = DeviceView
 
-    def __init__(self, parent, view=None):
-        super(DeviceController, self).__init__(parent=parent, view=view)
-
     @property
     def devices(self):
         return DeviceModel.get_devices()
 
-    def start(self):
+    def _start(self):
         self.application.get_controller("gpio").view.hide()
-        super(DeviceController, self).start()
+        super(DeviceController, self)._start()
         self.load_devices()
 
     def load_devices(self):
@@ -51,18 +52,13 @@ class DeviceController(controller.ViewController):
             raise ValueError("Invalid index: %s" % idx)
         return self.devices[idx]
 
-    def load_gpio(self):
-        lb = self.view.get_widget("devices")
-        """:type: Tkinter.ListBox | tkinter.ListBox"""
-        selection = lb.curselection()
-        if len(selection) > 0:
-            self.view.hide()
-            # get device
-            model = self.get_device(selection[0])
-            # load device model
-            self.application.get_controller("gpio").start(model)
-        else:
-            self.view.status = "Please select a device"
+    def load_gpio(self, selection):
+        # get device
+        model = self.get_device(selection)
+        # hide view
+        self.view.hide()
+        # load device model
+        self.application.get_controller("gpio").start(model)
 
 
 # noinspection PyUnresolvedReferences
@@ -72,6 +68,11 @@ class GPIOController(controller.Controller, Observer):
     VIEW_CLASS = GPIOView
 
     def start(self, model=None):
+        if not self._configured:
+            self.prepare()
+        return self._start(model)
+
+    def _start(self, model=None):
         if not isinstance(model, DeviceModel):
             raise ValueError("Invalid Model")
         self._model = model
