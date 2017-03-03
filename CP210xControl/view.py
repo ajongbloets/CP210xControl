@@ -18,7 +18,7 @@ class MainView(viewset.ViewSet):
         self.configure_column(self, 0)
         self.configure_row(self, 0)
 
-# noinspection PyUnresolvedReferences
+
 class DeviceView(view.View):
     """View showing the list of devices"""
 
@@ -90,14 +90,13 @@ class DeviceView(view.View):
         self.controller.application.stop()
 
     def process_ok(self):
-        selection = self.view.get_widget("devices").curselection()
+        selection = self.get_widget("devices").curselection()
         if len(selection) > 0:
             self.controller.load_gpio(selection[0])
         else:
             self.status = "Select a device"
 
 
-# noinspection PyUnresolvedReferences
 class GPIOView(view.View):
     """View showing all the relays"""
 
@@ -142,7 +141,7 @@ class GPIOView(view.View):
         var = view.tk.IntVar(self)
         self.add_variable("gpio_%s" % idx, var)
         cb = view.ttk.Checkbutton(
-            parent, variable=var, command=lambda: self.toggle_gpio(idx))
+            parent, variable=var, command=lambda x=idx: self.toggle_gpio(x))
         self.add_widget("gpio_cb_%s" % idx, cb)
         self.configure_grid(cb, row=0, column=0)
         lb = view.ttk.Label(parent, text="GPIO %s" % idx)
