@@ -23,7 +23,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1.1.alpha',
+    version='0.1.2.alpha',
 
     description='A simple GUI for CP210x USB to UART Bridges',
     long_description=long_description,
@@ -79,7 +79,6 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        "julesTk >= 0.3.0a0",
         "pyusb"
     ],
 
@@ -111,7 +110,7 @@ setup(
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
-        'console_scripts': [
+        'gui_scripts': [
             'CP210xControlGUI=CP210xControl:start_app',
         ],
     },

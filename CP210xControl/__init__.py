@@ -1,6 +1,6 @@
 """Application entry point"""
 from julesTk.app import Application
-from controller import MainController
+from .controller import MainController
 
 __author__ = "Joeri Jongbloets <joeri@jongbloets.net>"
 
@@ -9,7 +9,7 @@ class CP210xControlApplication(Application):
 
     def _prepare(self):
         self.add_controller("main", MainController(self))
-        self.wm_title("CP210x Control")
+        self.root.title("CP210x Control")
 
     @property
     def main(self):

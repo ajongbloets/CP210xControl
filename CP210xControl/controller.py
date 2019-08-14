@@ -2,8 +2,8 @@
 
 from julesTk import controller
 from julesTk.utils.observe import Observer
-from model import DeviceModel
-from view import *
+from .model import DeviceModel
+from .view import *
 
 __author__ = "Joeri Jongbloets <joeri@jongbloets.net>"
 
