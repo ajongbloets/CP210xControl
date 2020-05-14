@@ -53,12 +53,14 @@ class DeviceController(controller.ViewController):
         return self.devices[idx]
 
     def load_gpio(self, selection):
-        # get device
-        model = self.get_device(selection)
         # hide view
         self.view.hide()
         # load device model
-        self.application.get_controller("gpio").start(model)
+        gpio = self.application.get_controller("gpio")
+        # set model
+        gpio.model = self.get_device(selection)
+        # start controller
+        gpio.start()
 
 
 # noinspection PyUnresolvedReferences
@@ -67,19 +69,13 @@ class GPIOController(controller.Controller, Observer):
 
     VIEW_CLASS = GPIOView
 
-    def start(self, model=None):
-        if not self._configured:
-            self.prepare()
-        return self._start(model)
-
-    def _start(self, model=None):
-        if not isinstance(model, DeviceModel):
-            raise ValueError("Invalid Model")
-        self._model = model
+    def _start(self):
+        if not isinstance(self.model, DeviceModel):
+            raise ValueError("Need a DeviceModel to work")
         self.model.register_observer(self)
         self.application.get_controller("device").view.hide()
         super(GPIOController, self).start()
-        # now update
+        # trigger update
         self.model.update()
 
     def set_gpio(self, gpio, state):
