@@ -92,7 +92,7 @@ class DeviceView(view.View):
     def process_ok(self):
         selection = self.get_widget("devices").curselection()
         if len(selection) > 0:
-            self.controller.load_gpio(selection[0])
+            self.controller.load_gpio(int(selection[0]))
         else:
             self.status = "Select a device"
 
