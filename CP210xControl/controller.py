@@ -16,11 +16,11 @@ class MainController(controller.ViewController):
         super(MainController, self)._prepare()
         # add device controller
         if not self.application.has_controller("device"):
-            c = DeviceController(self).prepare()
+            c = DeviceController(self)
             self.application.add_controller("device", c)
         # add gpio controller
         if not self.application.has_controller("gpio"):
-            c = GPIOController(self).prepare()
+            c = GPIOController(self)
             self.application.add_controller("gpio", c)
 
     def _start(self):
@@ -39,7 +39,6 @@ class DeviceController(controller.ViewController):
         return DeviceModel.get_devices()
 
     def _start(self):
-        self.application.get_controller("gpio").view.hide()
         super(DeviceController, self)._start()
         self.load_devices()
 
@@ -74,7 +73,7 @@ class GPIOController(controller.Controller, Observer):
             raise ValueError("Need a DeviceModel to work")
         self.model.register_observer(self)
         self.application.get_controller("device").view.hide()
-        super(GPIOController, self).start()
+        super(GPIOController, self)._start()
         # trigger update
         self.model.update()
 
